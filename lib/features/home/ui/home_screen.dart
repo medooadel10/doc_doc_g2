@@ -16,7 +16,8 @@ class HomeScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => HomeProvider()
         ..getAllSpecializations()
-        ..getAllDoctors(),
+        ..getAllDoctors()
+        ..getProfile(),
       child: Scaffold(
         body: SafeArea(
           child: Padding(

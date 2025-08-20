@@ -5,4 +5,5 @@ class ApiConstants {
   static String login = 'auth/login';
   static String getAllSpecializations = 'specialization/index';
   static String getAllDoctors = 'doctor/index';
+  static String getProfile = 'user/profile';
 }
