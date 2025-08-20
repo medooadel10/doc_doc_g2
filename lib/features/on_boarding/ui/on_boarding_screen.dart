@@ -1,5 +1,6 @@
 import 'package:docdoc_app/core/style/colors.dart';
 import 'package:docdoc_app/core/widgets/custom_button.dart';
+import 'package:docdoc_app/features/login/ui/login_screen.dart';
 import 'package:docdoc_app/features/register/ui/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -71,9 +72,7 @@ class OnBoardingScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => RegisterScreen(),
-                        ),
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                     },
                     text: 'Get Started',

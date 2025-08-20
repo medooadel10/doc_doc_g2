@@ -2,20 +2,20 @@ import 'package:docdoc_app/core/style/colors.dart';
 import 'package:docdoc_app/core/widgets/custom_button.dart';
 import 'package:docdoc_app/core/widgets/custom_text_button.dart';
 import 'package:docdoc_app/core/widgets/custom_text_field.dart';
-import 'package:docdoc_app/features/login/ui/login_screen.dart';
-import 'package:docdoc_app/features/register/logic/register_provider.dart';
+import 'package:docdoc_app/features/login/logic/login_provider.dart';
+import 'package:docdoc_app/features/register/ui/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => RegisterProvider(),
+      create: (context) => LoginProvider(),
       builder: (context, _) {
-        final provider = context.read<RegisterProvider>();
+        final provider = context.read<LoginProvider>();
         return Scaffold(
           body: SafeArea(
             child: Column(
@@ -32,7 +32,7 @@ class RegisterScreen extends StatelessWidget {
                           spacing: 10,
                           children: [
                             Text(
-                              'Create Account',
+                              'Welcome Back',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).colorScheme.primary,
@@ -40,7 +40,7 @@ class RegisterScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "Sign up now and start exploring all that our app has to offer. We're excited to welcome you to our community!",
+                              "We're excited to have you back, can't wait to see what you've been up to since you last logged in.",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: AppColors.bodyColor,
@@ -54,17 +54,6 @@ class RegisterScreen extends StatelessWidget {
                             spacing: 14,
                             children: [
                               CustomTextField(
-                                controller: provider.nameController,
-                                hintText: 'Name',
-                                keyboardType: TextInputType.name,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              CustomTextField(
                                 controller: provider.emailController,
                                 hintText: 'Email',
                                 keyboardType: TextInputType.emailAddress,
@@ -75,17 +64,7 @@ class RegisterScreen extends StatelessWidget {
                                   return null;
                                 },
                               ),
-                              CustomTextField(
-                                controller: provider.phoneController,
-                                hintText: 'Phone',
-                                keyboardType: TextInputType.phone,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your phone';
-                                  }
-                                  return null;
-                                },
-                              ),
+
                               CustomTextField(
                                 controller: provider.passwordController,
                                 hintText: 'Password',
@@ -98,35 +77,19 @@ class RegisterScreen extends StatelessWidget {
                                   return null;
                                 },
                               ),
-                              CustomTextField(
-                                controller:
-                                    provider.confimrationPasswordController,
-                                hintText: 'Confirm Password',
-                                keyboardType: TextInputType.visiblePassword,
-                                obscureText: true,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please retype the password';
-                                  } else if (value !=
-                                      provider.passwordController.text) {
-                                    return 'Passwords dont match';
-                                  }
-                                  return null;
-                                },
-                              ),
                             ],
                           ),
                         ),
-                        Consumer<RegisterProvider>(
+                        Consumer<LoginProvider>(
                           builder: (context, _, _) {
                             if (provider.isLoading) {
                               return Center(child: CircularProgressIndicator());
                             }
                             return CustomButton(
                               onPressed: () {
-                                provider.createAccount();
+                                provider.login(context);
                               },
-                              text: 'Create Account',
+                              text: 'Login',
                             );
                           },
                         ),
@@ -139,7 +102,7 @@ class RegisterScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Already have an account yet?',
+                      'Aren\'t you have an account ?',
                       style: TextStyle(color: Colors.black, fontSize: 14),
                     ),
                     CustomTextButton(
@@ -147,11 +110,11 @@ class RegisterScreen extends StatelessWidget {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
+                            builder: (context) => RegisterScreen(),
                           ),
                         );
                       },
-                      text: 'Sign In',
+                      text: 'Sign Up',
                     ),
                   ],
                 ),
