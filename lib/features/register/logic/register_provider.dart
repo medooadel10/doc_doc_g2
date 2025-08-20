@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:docdoc_app/core/helpers/local_storage.dart';
 import 'package:docdoc_app/core/networking/api_constants.dart';
 import 'package:docdoc_app/core/networking/dio_factory.dart';
+import 'package:docdoc_app/features/home/ui/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -14,7 +15,7 @@ class RegisterProvider extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
-  void createAccount() async {
+  void createAccount(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       isLoading = true;
       notifyListeners();
@@ -35,6 +36,11 @@ class RegisterProvider extends ChangeNotifier {
         isLoading = false;
         notifyListeners();
         Fluttertoast.showToast(msg: 'You are registered successfully');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (route) => false,
+        );
       } on DioException catch (e) {
         isLoading = false;
         notifyListeners();

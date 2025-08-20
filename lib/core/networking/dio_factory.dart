@@ -20,4 +20,17 @@ class DioFactory {
     );
     return response;
   }
+
+  static Future<Response<dynamic>> getData(
+    String endpoint, {
+    Map<String, dynamic>? queryParameters,
+    String? token,
+  }) async {
+    final response = await dio.get(
+      endpoint,
+      queryParameters: queryParameters,
+      options: Options(headers: {'Authorization': "Bearer $token"}),
+    );
+    return response;
+  }
 }

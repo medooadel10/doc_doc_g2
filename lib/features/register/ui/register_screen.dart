@@ -124,7 +124,7 @@ class RegisterScreen extends StatelessWidget {
                             }
                             return CustomButton(
                               onPressed: () {
-                                provider.createAccount();
+                                provider.createAccount(context);
                               },
                               text: 'Create Account',
                             );
