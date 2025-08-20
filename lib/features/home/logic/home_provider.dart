@@ -4,6 +4,7 @@ import 'package:docdoc_app/core/networking/dio_factory.dart';
 import 'package:docdoc_app/features/home/models/doctors_response_model.dart';
 import 'package:docdoc_app/features/home/models/specializations_response_model.dart';
 import 'package:docdoc_app/features/home/models/user_response_model.dart';
+import 'package:docdoc_app/features/home/ui/home_body_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -42,4 +43,17 @@ class HomeProvider extends ChangeNotifier {
     user = data.user;
     notifyListeners();
   }
+
+  int currentIndex = 0;
+  void changeIndex(int index) {
+    currentIndex = index;
+    notifyListeners();
+  }
+
+  List<Widget> homeScreens = [
+    HomeBodyScreen(),
+    Container(),
+    Container(),
+    Container(),
+  ];
 }

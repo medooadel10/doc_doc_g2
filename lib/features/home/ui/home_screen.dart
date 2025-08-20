@@ -18,21 +18,41 @@ class HomeScreen extends StatelessWidget {
         ..getAllSpecializations()
         ..getAllDoctors()
         ..getProfile(),
-      child: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            child: Column(
-              spacing: 16,
-              children: [
-                HomeHeader(),
-                HomeBanner(),
-                HomeSpecialities(),
-                Expanded(child: HomeDoctors()),
+      child: Consumer<HomeProvider>(
+        builder: (context, _, _) {
+          final provider = context.read<HomeProvider>();
+          return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.search, color: Colors.white),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              onTap: (value) {
+                provider.changeIndex(value);
+              },
+              currentIndex: provider.currentIndex,
+              items: [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.message),
+                  label: 'Messages',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_month),
+                  label: 'Calendar',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
               ],
             ),
-          ),
-        ),
+            body: provider.homeScreens[provider.currentIndex],
+          );
+        },
       ),
     );
   }

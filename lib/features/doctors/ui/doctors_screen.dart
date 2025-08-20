@@ -1,51 +1,75 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:docdoc_app/core/style/colors.dart';
-import 'package:docdoc_app/core/widgets/custom_text_button.dart';
-import 'package:docdoc_app/features/doctors/ui/doctors_screen.dart';
-import 'package:docdoc_app/features/home/logic/home_provider.dart';
+import 'package:docdoc_app/core/widgets/custom_text_field.dart';
+import 'package:docdoc_app/features/home/models/doctors_response_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class HomeDoctors extends StatelessWidget {
-  const HomeDoctors({Key? key}) : super(key: key);
+class DoctorsScreen extends StatefulWidget {
+  final List<DoctorModel> doctors;
+  const DoctorsScreen({Key? key, required this.doctors}) : super(key: key);
+
+  @override
+  State<DoctorsScreen> createState() => _DoctorsScreenState();
+}
+
+class _DoctorsScreenState extends State<DoctorsScreen> {
+  final searchController = TextEditingController();
+  List<DoctorModel>? filteredDoctors;
+
+  void searchForDoctors() {
+    if (searchController.text.isEmpty) {
+      setState(() {
+        filteredDoctors = null;
+      });
+      return;
+    }
+    setState(() {
+      filteredDoctors = widget.doctors
+          .where(
+            (e) =>
+                e.name.toLowerCase().contains(
+                  searchController.text.toLowerCase(),
+                ) ||
+                e.description.toLowerCase().contains(
+                  searchController.text.toLowerCase(),
+                ) ||
+                e.email.toLowerCase().contains(
+                  searchController.text.toLowerCase(),
+                ) ||
+                e.degree.toLowerCase().contains(
+                  searchController.text.toLowerCase(),
+                ) ||
+                e.specialization.name.toLowerCase().contains(
+                  searchController.text.toLowerCase(),
+                ),
+          )
+          .toList();
+      print(filteredDoctors!.length);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<HomeProvider>();
-    return Consumer<HomeProvider>(
-      builder: (context, _, _) {
-        return Column(
+    return Scaffold(
+      appBar: AppBar(title: Text('Recommendation Doctor')),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          spacing: 20,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Recommendation Doctors',
-                    style: TextStyle(
-                      color: AppColors.text100Color,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                CustomTextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            DoctorsScreen(doctors: provider.doctors),
-                      ),
-                    );
-                  },
-                  text: 'See All',
-                ),
-              ],
+            CustomTextField(
+              controller: searchController,
+              hintText: 'Search for doctors',
+              onChange: (value) {
+                searchForDoctors();
+              },
             ),
             Expanded(
               child: ListView.separated(
                 itemBuilder: (context, index) {
-                  final doctor = provider.doctors[index];
+                  final doctor = filteredDoctors == null
+                      ? widget.doctors[index]
+                      : filteredDoctors![index];
                   return Row(
                     spacing: 12,
                     children: [
@@ -94,12 +118,14 @@ class HomeDoctors extends StatelessWidget {
                   );
                 },
                 separatorBuilder: (context, index) => SizedBox(height: 16),
-                itemCount: provider.doctors.length,
+                itemCount: filteredDoctors == null
+                    ? widget.doctors.length
+                    : filteredDoctors!.length,
               ),
             ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 }
