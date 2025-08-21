@@ -6,4 +6,7 @@ class ApiConstants {
   static String getAllSpecializations = 'specialization/index';
   static String getAllDoctors = 'doctor/index';
   static String getProfile = 'user/profile';
+  static String doctorDetails = 'doctor/show';
+  static String storeAppointment = 'appointment/store';
+  static String getAllAppointments = 'appointment/index';
 }

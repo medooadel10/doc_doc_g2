@@ -13,4 +13,8 @@ class LocalStorage {
   static String? getString(String key) {
     return sharedPreferences.getString(key);
   }
+
+  static Future<void> clear() async {
+    await sharedPreferences.clear();
+  }
 }

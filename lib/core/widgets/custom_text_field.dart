@@ -10,6 +10,9 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool obscureText;
   final Function(String)? onChange;
+  final bool readOnly;
+  final VoidCallback? onTap;
+  final int? maxLines;
 
   const CustomTextField({
     Key? key,
@@ -20,6 +23,9 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.obscureText = false,
     this.onChange,
+    this.readOnly = false,
+    this.onTap,
+    this.maxLines = 1,
   }) : super(key: key);
 
   @override
@@ -55,6 +61,9 @@ class CustomTextField extends StatelessWidget {
       validator: validator,
       obscureText: obscureText,
       onChanged: onChange,
+      readOnly: readOnly,
+      onTap: onTap,
+      maxLines: maxLines,
     );
   }
 }
